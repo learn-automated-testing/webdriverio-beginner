@@ -11,6 +11,8 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.js",
-    "form-buttons": "wdio run ./wdio.conf.js --spec form-buttons-elements.js"
+    "form-buttons": "wdio run ./wdio.conf.js --spec form-buttons-elements.js",
+    "link-elements": "wdio run ./wdio.conf.js --spec link-elements.js",
+    "checkboxes": "wdio run ./wdio.conf.js --spec checkboxes.js"
   }
 }

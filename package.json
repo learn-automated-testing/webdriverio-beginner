@@ -14,6 +14,7 @@
     "form-buttons": "wdio run ./wdio.conf.js --spec form-buttons-elements.js",
     "link-elements": "wdio run ./wdio.conf.js --spec link-elements.js",
     "checkboxes": "wdio run ./wdio.conf.js --spec checkboxes.js",
-    "radio-buttons": "wdio run ./wdio.conf.js --spec radio-buttons.js"
+    "radio-buttons": "wdio run ./wdio.conf.js --spec radio-buttons.js",
+    "dropdowns": "wdio run ./wdio.conf.js --spec dropdowns.js"
   }
 }

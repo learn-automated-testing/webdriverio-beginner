@@ -15,7 +15,7 @@ describe('CSS test', () => {
         // Click the hyperlink
         await hyperlink.click();
 
-        // Verify the successful submission
+        // Verify the successful click action
         const successfulClick = await $('[id="targetSection"] p');
 
         await successfulClick.waitForDisplayed();

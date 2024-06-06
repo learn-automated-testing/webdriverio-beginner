@@ -19,6 +19,7 @@ describe('CSS test', () => {
 
         // Verify the correct radio button is enabled 
         let message = await $('[id="message"]');
+        await message.waitForDisplayed();
         await expect(message).toHaveText('You selected: Radio 1');
 
         // Get the CSS of the RADIOBUTTON2 element
@@ -27,7 +28,8 @@ describe('CSS test', () => {
         // Check radio button2
         await checkbox2.click();
 
-       // Verify the correct radio button is enabled 
+       // Verify the correct radio button is enabled
+       await message.waitForDisplayed(); 
        await expect(message).toHaveText('You selected: Radio 2');
 
     });

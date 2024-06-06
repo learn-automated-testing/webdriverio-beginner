@@ -1,6 +1,6 @@
 
 
-describe('My Login application', () => {
+describe('CSS test', () => {
     it('Buttons Elements', async () => {
 
         // Go to the webpage

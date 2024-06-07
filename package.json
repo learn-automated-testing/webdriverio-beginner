@@ -17,6 +17,7 @@
     "radio-buttons": "wdio run ./wdio.conf.js --spec radio-buttons.js",
     "dropdowns": "wdio run ./wdio.conf.js --spec dropdowns.js",
     "text-elements": "wdio run ./wdio.conf.js --spec text-elements.js",
-    "drag-and-drop": "wdio run ./wdio.conf.js --spec drag-and-drop.js"
+    "drag-and-drop": "wdio run ./wdio.conf.js --spec drag-and-drop.js",
+    "hover": "wdio run ./wdio.conf.js --spec hover.js"
   }
 }

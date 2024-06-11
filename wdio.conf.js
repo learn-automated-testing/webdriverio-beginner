@@ -1,4 +1,9 @@
-
+import fs from 'fs-extra'
+// import { exec } from 'child_process';
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig();
+import allure from 'allure-commandline'
+// import video from 'wdio-video-reporter'
 
 export const config = {
     //
@@ -141,10 +146,22 @@ export const config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec',
-    ['allure', 
-    {outputDir: 'allure-results'}
-    ]
-],
+        // [video, {
+        //   saveAllVideos: true,       // If true, also saves videos for successful test cases
+        //   videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+        //   videoFormat: 'mp4',
+        //   outputDir: './allure-results/_results_'
+        // }],
+        ['allure', {
+            //allure generate allure-results && allure open  -> generates and opens the allure report
+            //allure generate --clean allure-results && allure open  -> empties the report folder prior generating a new one
+            //npx allure open -> opens the report when automatically generating the report is enabled in the onComplete() hook
+            outputDir: './allure-results', 
+            disableWebdriverStepsReporting: false,
+            disableWebdriverScreenshotsReporting: false,
+            disableMochaHooks: true
+        }],
+    ],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -166,8 +183,13 @@ export const config = {
      * @param {object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: function (config, capabilities) {
+        if (!process.env.CI) {
+          if (fs.existsSync("./allure-results")) {
+            fs.rmSync("./allure-results", { recursive: true });
+          }
+        }
+      },
     /**
      * Gets executed before a worker process is spawned and can be used to initialize specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -223,8 +245,11 @@ export const config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+    beforeTest: async function (test, context) {
+          
+        //Maximize the browser window
+        //await browser.maximizeWindow();
+        },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
@@ -294,8 +319,24 @@ export const config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
+    onComplete: function () {
+        const reportError = new Error("Could not generate Allure report");
+        const generation = allure(["generate", "allure-results", "--clean"]);
+        return new Promise((resolve, reject) => {
+          const generationTimeout = setTimeout(() => reject(reportError), 60000);
+    
+          generation.on("exit", function (exitCode) {
+            clearTimeout(generationTimeout);
+    
+            if (exitCode !== 0) {
+              return reject(reportError);
+            }
+    
+            console.log("Allure report successfully generated");
+            resolve();
+          });
+        });
+      },
     /**
     * Gets executed when a refresh happens.
     * @param {string} oldSessionId session ID of the old session
